@@ -1,0 +1,163 @@
+/* ==========================================================================
+   爱听写词汇标注 — 样式主题
+   移植自 immersive-translate 的 inject.css，前缀改为 ielts-mark-
+   ========================================================================== */
+
+:root {
+  --ielts-mark-color: #e0a800;
+  --ielts-mark-color-rgb: 224, 168, 0;
+}
+
+/* 基础容器 */
+.ielts-mark {
+  cursor: help;
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
+}
+
+/* ---------- highlight：整块高亮底色（默认） ---------- */
+.ielts-mark-theme-highlight {
+  background-color: var(--ielts-mark-color) !important;
+  border-radius: 2px;
+  padding: 0 1px;
+}
+
+/* ---------- underline：细实线下划线 ---------- */
+.ielts-mark-theme-underline {
+  border-bottom: 1px solid var(--ielts-mark-color) !important;
+}
+
+/* ---------- nativeUnderline：原生下划线 ---------- */
+.ielts-mark-theme-nativeUnderline {
+  text-decoration: underline !important;
+  text-decoration-color: var(--ielts-mark-color) !important;
+  text-underline-offset: 2px;
+}
+
+/* ---------- nativeDashed：虚线下划线 ---------- */
+.ielts-mark-theme-nativeDashed {
+  text-decoration: underline !important;
+  text-decoration-color: var(--ielts-mark-color) !important;
+  text-decoration-style: dashed !important;
+  text-underline-offset: 2px;
+}
+
+/* ---------- nativeDotted：点状下划线 ---------- */
+.ielts-mark-theme-nativeDotted {
+  text-decoration: underline !important;
+  text-decoration-color: var(--ielts-mark-color) !important;
+  text-decoration-style: dotted !important;
+  text-underline-offset: 2px;
+}
+
+/* ---------- wavy：波浪线 ---------- */
+.ielts-mark-theme-wavy {
+  text-decoration: underline !important;
+  text-decoration-color: var(--ielts-mark-color) !important;
+  text-decoration-style: wavy !important;
+  text-underline-offset: 2px;
+}
+
+/* ---------- thinDashed：细虚线底 ---------- */
+.ielts-mark-theme-thinDashed {
+  border-bottom: 1px dashed var(--ielts-mark-color) !important;
+}
+
+/* ---------- dotted：点状底（背景实现） ---------- */
+.ielts-mark-theme-dotted {
+  background-image: linear-gradient(
+    to right,
+    var(--ielts-mark-color) 30%,
+    rgba(255, 255, 255, 0) 0%
+  );
+  background-position: bottom;
+  background-size: 5px 1px;
+  background-repeat: repeat-x;
+  padding-bottom: 3px;
+}
+
+/* ---------- dashed：粗虚线底 ---------- */
+.ielts-mark-theme-dashed {
+  background: linear-gradient(
+      to right,
+      var(--ielts-mark-color) 0%,
+      var(--ielts-mark-color) 50%,
+      transparent 50%,
+      transparent 100%
+    )
+    repeat-x left bottom;
+  background-size: 8px 2px;
+  padding-bottom: 2px;
+}
+
+/* ---------- marker：荧光笔渐变感 ---------- */
+.ielts-mark-theme-marker {
+  background: linear-gradient(
+    to right,
+    rgba(var(--ielts-mark-color-rgb), 0.1),
+    rgba(var(--ielts-mark-color-rgb), 0.9) 3%,
+    rgba(var(--ielts-mark-color-rgb), 0.9) 35%,
+    rgba(var(--ielts-mark-color-rgb), 0.9) 70%,
+    rgba(var(--ielts-mark-color-rgb), 0.8) 95%,
+    rgba(var(--ielts-mark-color-rgb), 0.3)
+  ) !important;
+}
+
+/* ---------- marker2：text-shadow 马克笔感 ---------- */
+.ielts-mark-theme-marker2 {
+  font-weight: bold;
+  text-shadow:
+    10px 0px 3px var(--ielts-mark-color),
+    16px 3px 9px var(--ielts-mark-color),
+    2px 0px 6px var(--ielts-mark-color),
+    -12px 0px 12px var(--ielts-mark-color) !important;
+}
+
+/* ---------- solidBorder：实线方框 ---------- */
+.ielts-mark-theme-solidBorder {
+  border: 1px solid var(--ielts-mark-color) !important;
+  border-radius: 3px;
+  padding: 0 2px;
+}
+
+/* ---------- dashedBorder：虚线方框 ---------- */
+.ielts-mark-theme-dashedBorder {
+  border: 1px dashed var(--ielts-mark-color) !important;
+  border-radius: 3px;
+  padding: 0 2px;
+}
+
+/* ---------- bold：加粗 ---------- */
+.ielts-mark-theme-bold {
+  font-weight: bold !important;
+  color: var(--ielts-mark-color) !important;
+}
+
+/* ---------- toast 提示 ---------- */
+.ielts-mark-toast {
+  position: fixed !important;
+  top: 20px;
+  right: 20px;
+  padding: 10px 16px;
+  background: #333;
+  color: #fff;
+  border-radius: 6px;
+  font-size: 14px;
+  font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif;
+  line-height: 1.4;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+  z-index: 2147483647;
+  opacity: 0;
+  transform: translateY(-8px);
+  transition: opacity 0.2s, transform 0.2s;
+  pointer-events: none;
+  max-width: 320px;
+}
+.ielts-mark-toast.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+.ielts-mark-toast.success { background: #2b8a3e; }
+.ielts-mark-toast.warn    { background: #c17c10; }
+.ielts-mark-toast.error   { background: #b02a2a; }
+.ielts-mark-toast.info    { background: #2c5282; }

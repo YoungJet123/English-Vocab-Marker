@@ -1,0 +1,193 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <title>爱听写词汇标注 — 设置</title>
+  <link rel="stylesheet" href="styles/highlight.css" />
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif;
+      color: #222;
+      max-width: 760px;
+      margin: 32px auto;
+      padding: 0 24px 48px;
+      line-height: 1.6;
+    }
+    h1 { font-size: 20px; margin-bottom: 8px; }
+    h2 { font-size: 15px; margin: 24px 0 8px; color: #555; font-weight: 600; }
+    .hint { color: #888; font-size: 13px; margin-bottom: 16px; }
+    fieldset { border: 1px solid #e5e5e5; border-radius: 6px; padding: 12px 16px; margin: 0; }
+    label.row { display: flex; align-items: center; gap: 10px; padding: 6px 0; cursor: pointer; }
+    input[type="radio"], input[type="checkbox"] { margin: 0; flex-shrink: 0; }
+    .preview-text { font-size: 16px; color: #222; }
+    .theme-list { display: grid; grid-template-columns: 1fr 1fr; gap: 6px 24px; }
+    input[type="color"] { width: 48px; height: 28px; padding: 0; border: 1px solid #ddd; border-radius: 4px; cursor: pointer; }
+    .preview-box {
+      margin-top: 12px; padding: 16px; background: #fafafa; border: 1px solid #eee;
+      border-radius: 6px; line-height: 1.8; font-size: 15px;
+    }
+    .status { color: #28a745; font-size: 13px; margin-left: 10px; opacity: 0; transition: opacity 0.3s; }
+    .status.show { opacity: 1; }
+    .vocab-row {
+      display: flex; align-items: center; gap: 10px; padding: 8px 0;
+      border-bottom: 1px solid #f0f0f0;
+    }
+    .vocab-row:last-child { border-bottom: none; }
+    .vocab-row .name { flex: 1; }
+    .vocab-row .count { color: #888; font-size: 12px; min-width: 60px; text-align: right; }
+    .vocab-row button, .btn {
+      font-size: 12px; padding: 3px 8px; background: #f4f4f4;
+      border: 1px solid #ddd; border-radius: 3px; cursor: pointer;
+    }
+    .vocab-row button:hover, .btn:hover { background: #ebebeb; }
+    .badge { font-size: 11px; color: #888; background: #f0f0f0; padding: 1px 6px; border-radius: 10px; }
+    .import-area {
+      margin-top: 12px; padding: 16px; border: 2px dashed #ddd; border-radius: 6px;
+      text-align: center; color: #888; cursor: pointer;
+    }
+    .import-area:hover { border-color: #bbb; background: #fafafa; }
+    .import-area.dragover { border-color: #e0a800; background: #fffaed; color: #333; }
+    .danger { color: #c00; }
+    code { background: #f4f4f4; padding: 1px 4px; border-radius: 3px; font-size: 13px; }
+    .mastered-stat { color: #888; font-size: 13px; }
+
+    .swatches { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+    .swatch {
+      width: 32px; height: 32px; border-radius: 50%; cursor: pointer;
+      border: 2px solid #ddd; box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+      transition: transform 0.1s, border-color 0.15s;
+    }
+    .swatch:hover { transform: scale(1.08); }
+    .swatch.active { border-color: #333; transform: scale(1.1); }
+
+    .shortcut-row {
+      display: flex; align-items: center; gap: 10px; padding: 6px 0;
+      flex-wrap: wrap;
+    }
+    .shortcut-row .label { min-width: 120px; color: #333; }
+    .shortcut-row .mods label { font-size: 13px; display: inline-flex; align-items: center; gap: 3px; margin-right: 8px; }
+    .shortcut-row select, .shortcut-row input[type="text"] {
+      font-size: 13px; padding: 3px 6px; border: 1px solid #ddd; border-radius: 3px;
+      background: #fff;
+    }
+    .shortcut-row .preview {
+      color: #888; font-size: 12px; margin-left: auto;
+      font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    }
+
+    .actions { display: flex; gap: 8px; align-items: center; }
+  </style>
+</head>
+<body>
+  <h1>爱听写词汇标注 — 设置</h1>
+  <p class="hint">修改后自动保存并实时应用到已打开的页面。</p>
+
+  <h2>启用</h2>
+  <fieldset>
+    <label class="row">
+      <input type="checkbox" id="enabled" />
+      <span>启用词汇标注</span>
+    </label>
+  </fieldset>
+
+  <h2>词汇表</h2>
+  <fieldset>
+    <div id="vocabList"></div>
+    <div class="import-area" id="importArea">
+      点击或拖拽文件到此处导入自定义词表<br />
+      <span style="font-size:12px">支持 .txt / .csv / .tsv / .json / .xlsx</span>
+      <input type="file" id="importFile" accept=".txt,.csv,.tsv,.json,.xlsx" hidden />
+    </div>
+    <div id="importStatus" style="margin-top:8px; font-size:13px;"></div>
+  </fieldset>
+
+  <h2>标注样式</h2>
+  <fieldset>
+    <div class="theme-list" id="themeList"></div>
+  </fieldset>
+
+  <h2>标注颜色</h2>
+  <fieldset>
+    <div class="swatches" id="swatches"></div>
+    <label class="row" style="margin-top:10px">
+      <span style="color:#666; font-size:13px">自定义</span>
+      <input type="color" id="color" />
+      <span id="colorText">#ffe066</span>
+    </label>
+  </fieldset>
+
+  <h2>预览</h2>
+  <div class="preview-box" id="preview">
+    Many <span class="ielts-mark ielts-mark-theme-highlight">abundant</span>
+    resources have been <span class="ielts-mark ielts-mark-theme-highlight">abandoned</span>
+    by the government, and the decision remains
+    <span class="ielts-mark ielts-mark-theme-highlight">absurd</span>
+    to most economists.
+  </div>
+
+  <h2>快捷键</h2>
+  <fieldset id="shortcutsFs">
+    <div class="shortcut-row" data-sc="mastered">
+      <span class="label">标记已掌握</span>
+      <span class="mods">
+        <label><input type="checkbox" data-mod="ctrl" /> Ctrl</label>
+        <label><input type="checkbox" data-mod="alt" /> Alt/Option</label>
+        <label><input type="checkbox" data-mod="shift" /> Shift</label>
+        <label><input type="checkbox" data-mod="meta" /> Cmd/Win</label>
+      </span>
+      <select data-key>
+        <option value="click">+ 点击标注</option>
+        <option value="">+ 按键（下方输入）</option>
+      </select>
+      <input type="text" data-keyinput maxlength="1" style="width:28px; text-align:center" placeholder="" />
+      <span class="preview"></span>
+    </div>
+    <div class="shortcut-row" data-sc="wordbook">
+      <span class="label">加入生词本</span>
+      <span class="mods">
+        <label><input type="checkbox" data-mod="ctrl" /> Ctrl</label>
+        <label><input type="checkbox" data-mod="alt" /> Alt/Option</label>
+        <label><input type="checkbox" data-mod="shift" /> Shift</label>
+        <label><input type="checkbox" data-mod="meta" /> Cmd/Win</label>
+      </span>
+      <select data-key>
+        <option value="">+ 按键</option>
+      </select>
+      <input type="text" data-keyinput maxlength="1" style="width:28px; text-align:center" placeholder="键" />
+      <span class="preview"></span>
+    </div>
+    <p class="hint" style="margin:8px 0 0">
+      选中英文单词后按"加入生词本"快捷键即可。标记已掌握可在文章中直接"修饰键 + 点击"标注。
+    </p>
+  </fieldset>
+
+  <h2>已掌握的单词</h2>
+  <fieldset>
+    <div class="vocab-row">
+      <span class="name mastered-stat">
+        已掌握 <strong id="masteredCount">0</strong> 个词。
+      </span>
+      <button id="clearMastered" class="danger">全部清空</button>
+    </div>
+  </fieldset>
+
+  <h2>生词本</h2>
+  <fieldset>
+    <div class="vocab-row">
+      <span class="name mastered-stat">
+        已记录 <strong id="wordbookCount">0</strong> 个生词。
+      </span>
+      <div class="actions">
+        <button id="exportWordbook" class="btn">导出 Markdown</button>
+        <button id="clearWordbook" class="danger">清空</button>
+      </div>
+    </div>
+  </fieldset>
+
+  <p class="hint" style="margin-top:24px">
+    <span id="saveStatus" class="status">已保存</span>
+  </p>
+
+  <script type="module" src="options.js"></script>
+</body>
+</html>

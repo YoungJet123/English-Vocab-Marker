@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <title>爱听写词汇标注</title>
+  <style>
+    body {
+      width: 260px;
+      margin: 0;
+      padding: 16px;
+      font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif;
+      font-size: 14px;
+      color: #222;
+    }
+    h1 { font-size: 15px; margin: 0 0 12px; font-weight: 600; }
+    .row { display: flex; align-items: center; justify-content: space-between; margin: 10px 0; }
+    .muted { color: #888; font-size: 12px; }
+    .switch {
+      position: relative; width: 40px; height: 22px;
+      background: #ccc; border-radius: 22px; cursor: pointer;
+      transition: background 0.2s;
+    }
+    .switch.on { background: #e0a800; }
+    .switch::after {
+      content: ""; position: absolute; top: 2px; left: 2px;
+      width: 18px; height: 18px; background: #fff; border-radius: 50%;
+      transition: left 0.2s;
+    }
+    .switch.on::after { left: 20px; }
+    button.link {
+      width: 100%; padding: 8px 10px; margin-top: 10px;
+      background: #f4f4f4; color: #333; border: 1px solid #e0e0e0;
+      border-radius: 4px; cursor: pointer; font-size: 13px;
+    }
+    button.link:hover { background: #ebebeb; }
+    .count { font-variant-numeric: tabular-nums; }
+  </style>
+</head>
+<body>
+  <h1>爱听写词汇标注</h1>
+  <div class="row">
+    <span>启用标注</span>
+    <div id="toggle" class="switch"></div>
+  </div>
+  <div class="row muted">
+    <span>当前页标注数</span>
+    <span class="count" id="count">—</span>
+  </div>
+  <div class="row muted">
+    <span>词表</span>
+    <span id="vocab">六级</span>
+  </div>
+  <button class="link" id="openOptions">打开设置</button>
+  <script src="popup.js"></script>
+</body>
+</html>

@@ -1,0 +1,53 @@
+{
+  "manifest_version": 3,
+  "name": "爱听写词汇标注",
+  "description": "在网页中自动标注词汇表中的单词，支持多种标注样式、已掌握词记录、生词本等。",
+  "version": "0.3.0",
+
+  "permissions": ["storage", "activeTab"],
+
+  "host_permissions": [
+    "<all_urls>"
+  ],
+
+  "background": {
+    "service_worker": "background.js"
+  },
+
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["content.js"],
+      "css": ["styles/highlight.css"],
+      "run_at": "document_idle",
+      "all_frames": false
+    }
+  ],
+
+  "web_accessible_resources": [
+    {
+      "resources": ["vocab/cet4.json", "vocab/cet6.json", "vocab/highschool.json"],
+      "matches": ["<all_urls>"]
+    }
+  ],
+
+  "action": {
+    "default_popup": "popup.html",
+    "default_title": "爱听写词汇标注",
+    "default_icon": {
+      "16": "icons/16.png",
+      "32": "icons/32.png",
+      "48": "icons/48.png",
+      "128": "icons/128.png"
+    }
+  },
+
+  "icons": {
+    "16": "icons/16.png",
+    "32": "icons/32.png",
+    "48": "icons/48.png",
+    "128": "icons/128.png"
+  },
+
+  "options_page": "options.html"
+}
